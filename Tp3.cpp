@@ -17,84 +17,68 @@ using namespace std;
 class ships
 {
 private:
-	int posX;	// Définit la position horizontal d'un vaiseau 
-	int posY;	// Définit la position verticale d'un vaiseau
+	int posX;			// Définit la position horizontal d'un vaiseau 
+	int posY;			// Définit la position verticale d'un vaiseau
 
+	sf::Texture img;	// Définit l'image d'un vaiseau
 };
+
+/* Protocole
+=========================*/
 
 /* Programme principale
 =========================*/
 int main()
 {
+	// Cération de la fenêtre
+	sf::RenderWindow window(sf::VideoMode(1000, 800), "DEFENDERS OF THE GALAZY");
+	
 	// Variable
 
-	sf::RenderWindow window(sf::VideoMode(1000, 800), "DEFENDERS OF THE GALAZY");
+	sf::Event event;				// Evenement de la fenetre			
+
+	sf::RenderTexture background;	// RenderTexture du background
+	background.create(1000, 800);
+	sf::RenderTexture player;		// RenderTexture du player
+	player.create(100, 100);
+	
+	sf::Texture texBackground;		// Texture du background
+	texBackground.loadFromFile("img/BG2.jpg");	
+	sf::Texture texPlayer;			// Texture du joueur -> Going to be in class
+	texPlayer.loadFromFile("img/FM4.png");
+
+	sf::Sprite sprtBackground;		// Sprite du background
+	sprtBackground.setTexture(texBackground);
+	sf::Sprite sprtPlayer;			// Sprite du player
+	sprtPlayer.setTexture(texPlayer);
 
 	// on fait tourner le programme jusqu'à ce que la fenêtre soit fermée
 	while (window.isOpen()) 
 	{
-		
-		sf::Event event;   // on inspecte tous les évènements de la fenêtre qui ont été émis depuis la précédente itération
+		// on inspecte tous les évènements de la fenêtre qui ont été émis depuis la précédente itération
 		while (window.pollEvent(event))
 		{
 			
 			if (event.type == sf::Event::Closed) // évènement "fermeture demandée" : on ferme la fenêtre
 				window.close();
 		}
-
-		window.clear(sf::Color::Black); // Logiquement efface la fenetre
-
-		sf::RenderTexture background;
-		if (!background.create(1000, 800))
-		{
-			cout << " La fenetre que vous tenter de généré est disidente ! Veuillez la dompter !"; // Affiche des instruction
-		}
-
-		// Création du background
-
-		sf::Texture texBackground;		// Texture du background
-		if (!texBackground.loadFromFile("BG2.jpg"))
-		{
-			cout << " La fenetre que vous tenter de généré est disidente ! Veuillez la dompter !"; // Affiche des instruction
-		}
-
-		sf::Sprite sprtBackground;		// sprite du background
-		sprtBackground.setTexture(texBackground);
-
-		background.clear();
-		background.draw(sprtBackground);
-		background.display();
-
-		// Récupération de la texture du background
-		const sf::Texture& texture = background.getTexture();
-
-		// on la dessine dans la fenêtre
-		sf::Sprite sprite(texture);
-		window.draw(sprite);
-
-		// Création d'un vaiseau du vaiseau du joueur
 		
-		sf::Texture texPlayer;		// Texture du player
-		if (!texBackground.loadFromFile("FM2.jpg"))
-		{
-			cout << " La fenetre que vous tenter de généré est disidente ! Veuillez la dompter !"; // Affiche des instruction
-		}
-
-		sf::Sprite sprtPlayer;		// sprite du player
-		sprtBackground.setTexture(texBackground);
-
+		// Efface la fenetre
+		window.clear(sf::Color::Black); 
+		
 		background.clear();
+		player.clear();
 		background.draw(sprtBackground);
+		player.draw(sprtPlayer);
 		background.display();
-
-		// Récupération de la texture du background
-		const sf::Texture& texture = background.getTexture();
-
-		// on la dessine dans la fenêtre
-		sf::Sprite sprite(texture);
-		window.draw(sprite);
-
-		window.display(); // Affiche ce qui est dessiné
+		player.display();
+		
+		// Dessine dans la fenêtre
+		window.draw(sprtBackground);	
+		window.draw(sprtPlayer);
+		
+		// Affiche ce qui est dessiné
+		window.display();
 	}
 
 	return 0;
